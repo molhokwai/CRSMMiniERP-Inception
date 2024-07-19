@@ -1,57 +1,14 @@
-function getSheetByName(spreadsheetId, sheetName) {
-  // Open the spreadsheet by its ID
-  const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
-  
-  // Get the sheet object by its name
-  const sheet = spreadsheet.getSheetByName(sheetName);
-  
-  // Check if the sheet exists
-  if (!sheet) {
-    throw new Error(`Sheet "${sheetName}" not found in spreadsheet with ID "${spreadsheetId}"`);
-  }
-  
-  // Return the sheet object
-  return sheet;
-}
 
-function goToSheet(sheetName) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
-  sheet.activate();
-}
-function goToShifts() {
-  goToSheet("Shifts");
-}
+function openCreateShiftForm() {
+  // const formId = '1Hcbh07N7P-QolKe2JxRvvZFVb-tMlfVQexv_JQXc5ks';
+  const formEmbedHTML = '<iframe src="https://docs.google.com/forms/d/e/1FAIpQLScMG0Plz_rujM09LR6UUCPVoqvc1dquvNeMMu9PaVsT_QByOA/viewform?embedded=true" width="640" height="775" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>';
 
+  var htmlOutput = HtmlService
+    .createHtmlOutput(formEmbedHTML)
+    .setWidth(750)
+    .setHeight(2000);
 
-function getActiveSheetData() {
-  /* USAGE
-   * -----    
-   * let headers = null, data = null;
-   * headers, data = getActiveSheetData();
-  */
-  var dataRange = SpreadsheetApp.getActiveSheet().getDataRange();
-  var data = dataRange.getValues();
-  var headers = data.pop();
-  return headers, data;
-}
-
-
-function getClient(clientName){
-  return {    
-    "CLIENT": clientName,
-  }
-}
-function getSite(siteName){
-  return {
-    "SITE": siteName,
-    "POST_CODE": null,    
-  }
-}
-function getEmployee(employeeName){
-  return {
-    "EMPLOYEE": employeeName,
-    "CONTACT": null,    
-    "SIA": null,    
-    "EXPIRY": null,    
-  }
+  // Open the form in a new browser tab
+  // FormApp.getUi().
+  SpreadsheetApp.getUi().showModalDialog(htmlOutput, ':form:');
 }

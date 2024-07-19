@@ -7,9 +7,12 @@ function convertTimeToDecimal(timeString = "00:00") {
 }
 
 function getTimeValues(timeString) {
-  const meridian = timeString.substring(timeString.length-3, timeString.length).replace(' ', '');
+  Logger.log(timeString);
+  const meridian = timeString.substring(timeString.length-3, timeString.length).replace(' ', '');  
+
   timeString = timeString.substring(0, timeString.length-3);
   timeValues = timeString.split(':').map(Number);
+  
   if(meridian == 'PM'){
     timeValues[0] += 12;
   }
@@ -98,6 +101,11 @@ function subtractTimes(begin = "00:00", end = "00:00") {
   return [timeString, timeFloat];
 }
 
+function getHours(endTime, startTime) {
+  return ((endTime - startTime)/(3600*1000)).toFixed(2);
+
+}
+
 
 let employees = []; // Global array to store Employee objects
 
@@ -112,6 +120,24 @@ class Employee {
   static getEmployeeByName(name) {
     return employees.find(employee => employee.name === name);
   }
+}
+
+
+function convertDecimalHoursToTime(decimalHours) {
+  if (decimalHours < 0 || decimalHours > 1) {
+    return "Invalid";
+  }
+
+  const hours = Math.floor(decimalHours);
+  const minutes = Math.round((decimalHours - hours) * 60);
+
+  return Utilities.formatString('%02d:%02d', hours, minutes);
+}
+function convertDateToTime(date) {
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  return Utilities.formatString('%02d:%02d', hours, minutes);
 }
 
 /*** TESTS
